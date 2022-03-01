@@ -1,7 +1,9 @@
+from datetime import date
 import glob
 from operator import inv
 import zipfile
 import pandas as pd
+import arrow
 
 # Gets CSVs from ZIPs
 def unzip_files():
@@ -44,5 +46,36 @@ def calculate_sample_amount(inventory):
     else:
         return 'Replace sku'
     
-if __name__ == '__main__':
-    get_shopify_data('./shopify_data/', 'csv')
+# returns an arrow date object (very expensive)
+def get_arrow_date(date_str, fmt='YYYY-MM-DD'):
+    try:
+        return arrow.get(date_str, fmt)
+    except TypeError:
+        return None
+    
+# checks publish date and order date
+def check_for_publishes(minimum_order, published_at):
+    """
+    Checks arrow date objects to see if if published date is after the earliest 
+    order for object.
+    
+    To be used in lambda wrapper .apply() in dataframe.
+
+    Args:
+        minimum_order (arrow): Earliest Order date for item
+        published_at (arrow): published date of item
+
+    Returns:
+        Bool: Whether or not an item should have multiple publish dates
+    """
+    if published_at and minimum_order < published_at:
+        return True
+    else:
+        return False
+    
+# Hacky fix for the splitting of the 'published_at' string
+def split_publish_string(_string):
+    try:
+        return _string.split('T')[0]
+    except AttributeError:
+        return None
