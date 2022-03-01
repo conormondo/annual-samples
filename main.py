@@ -46,11 +46,9 @@ items['order'] = items['created_at'].apply(get_arrow_date) # Expensive
 agg = {'order': ['min', 'max'], 'created_at': 'count'}
 agg_items = items.groupby(['sku', 'name']).agg(agg).reset_index()
 agg_items.columns = [' '.join(col).strip() for col in agg_items.columns.values]
-print(agg_items.columns)
 
-# Get unique <- This tim
+# Get unique
 unique_items = agg_items.drop_duplicates(subset='sku')
-print('Unique Items in set: ', len(unique_items))
 
 # Pull out easy items with "Marvel" in name
 marvel_named = unique_items[unique_items['name'].str.contains(
@@ -79,18 +77,18 @@ all_marvel['multiple_publish_dates'] = all_marvel.apply(lambda x: check_for_publ
     x['order min'], x['published_at']), axis=1)
 
 # Attaches Inventory
+print('Calling inventory API...')
 inventory = api.get_inventory()
 counts = inventory[['sku', 'quantity_on_hand',
                     'quantity_committed',
                     'quantity_available']]
-print('Pre inventory merge: ', all_marvel.shape)
+
 merged = pd.merge(all_marvel,
                   counts,
                   on='sku',
                   how='left')
 merged.sort_values(by='sku', inplace=True)
 merged = merged.drop_duplicates(subset='sku', keep='first').reset_index(drop=True)
-print('Post inventory merge: ', merged.shape)
 
 # Adds Sample information for anything
 merged['samples'] = merged.apply(lambda x: calculate_sample_amount(x['quantity_available']) if \
@@ -119,5 +117,4 @@ print('Unnamed Marvel Items found: ', len(non_marvel_named))
 print('Manually Added Marvel Items: ', len(manual_marvel))
 print('Total Marvel: ', (len(marvel_named) + len(manual_marvel)))
 
-print(merged)
-merged.to_clipboard()
+merged.to_csv(get_download_path('annual_samples.csv'), index=False)

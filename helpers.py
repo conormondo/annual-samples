@@ -1,9 +1,9 @@
-from datetime import date
+import os
 import glob
-from operator import inv
 import zipfile
 import pandas as pd
 import arrow
+from pathlib import Path
 
 # Gets CSVs from ZIPs
 def unzip_files():
@@ -80,3 +80,8 @@ def split_publish_string(_string):
         return _string.split('T')[0]
     except AttributeError:
         return None
+    
+# Returns Downloads path:
+def get_download_path(filename):
+    _path = str(Path.home() / 'Downloads')
+    return os.path.join(_path, filename)
