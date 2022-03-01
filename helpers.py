@@ -35,6 +35,7 @@ def get_shopify_data(path, filetype, save=False):
     else:
         print(f'Unable to get {filetype} from {path}')
         return None
+
 # Gets How many samples to send
 def calculate_sample_amount(inventory):
     ''' Takes inventory level and returns the 'action' for annual samples.'''
@@ -44,7 +45,7 @@ def calculate_sample_amount(inventory):
     if inv >= 2:
         return 'Send 2'
     else:
-        return 'Replace sku'
+        return 'Pull from Arcive / Replace sku'
     
 # returns an arrow date object (very expensive)
 def get_arrow_date(date_str, fmt='YYYY-MM-DD'):

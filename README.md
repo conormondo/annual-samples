@@ -14,21 +14,33 @@ Will probably rename these columns
 ```
 sku                                object
 name                               object
-arrow min                          object
-arrow max                          object
-created_at count                    int64
+order min                          object
+order max                          object
+order_min_count                    int64
+product_type                       object
 published_at                       object
+image_url                          object
 order_delta               timedelta64[ns]
 lifetime_delta            timedelta64[ns]
 multiple_publish_dates               bool
+quantity_on_hand                    int64
+quantity_committed                  int64
+quantity_available                  int64
+samples                            object
  ```
+ 
  ### Column Descriptions:
- - sku: Item sku
- - name: Item name
- - arrow min: the 'oldest' orders with that skus in the order data.
- - arrow max: the 'most recent' order with that sku in the order data.
- - created_at count: Count of the arrow min column. Essentially to try and deduce confidence of release date by frequence of orders on the earliest order date.
- - published_at: Date that item was most recently published on site.
- - order_delta: Delta of most recent order minus the oldest order in order data
- - lifetime_delta: Delta of most recent order in order data minus publish date
- - multiple_publish_dates: True or False whether or not the earlist order in data set happened before the publish date. Publish date that is older than the minimum order implies an item was published, sold, hidden, then republished. Making it a lot harder to programatically find the release date.
+ - **sku**: Item sku
+ - **name**: Item name
+ - **order_min**: the 'oldest' orders with that skus in the order data.
+ - **order_max**: the 'most recent' order with that sku in the order data.
+ - **order_min_count**: Count of the arrow min column. Essentially to try and deduce confidence of release date by frequence of orders on the earliest order date.
+ - **product_type**: Item Category from shopify
+ - **published_at**: Date that item was most recently published on site.
+ - **order_delta**: Delta of most recent order minus the oldest order in order data
+ - **lifetime_delta**: Delta of most recent order in order data minus publish date
+ - **multiple_publish_dates**: True or False whether or not the earlist order in data set happened before the publish date. Publish date that is older than the minimum order implies an item was published, sold, hidden, then republished. Making it a lot harder to programatically find the release date.
+ - **quantity_on_hand**: Quantity on hand in respective warehouse.
+ - **quantity_committed**: Quantity committed to sku in respective warehouse.
+ - **quantity_available**: Quantity on hand - Quantity commited.
+ - **samples**: General action on what samples are needed to send

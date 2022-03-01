@@ -25,7 +25,8 @@ class Finale:
             response[0] = ['sku',
                        'description',
                        'quantity_on_hand',
-                       'quantity_available']
+                       'quantity_available',
+                       'quantity_committed']
             data = []
             for item in response[1:]:
                 tmp = {}
