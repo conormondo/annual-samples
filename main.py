@@ -1,11 +1,10 @@
-from tkinter import N
 import pandas as pd
 from helpers import *
 
 SS_PATH = 'data/annuals_from_ss.csv'
 SHOPIFY_PATH = 'data/shopify_data/16csv_files.csv'
 MAN_MARVEL_PATH = 'data/manually_selected_marvel.csv'
-item_data_df_PATH = 'data/mondo_items_20220224.csv'
+ITEM_DATA_PATH = 'data/mondo_items_20220224.csv'
 AMP_INVENTORY_PATH = ''
 FIN_INVENTORY_PATH = ''
 
@@ -32,7 +31,7 @@ item_data_df_COLUMNS = ['sku',
 ss_df = pd.read_csv(SS_PATH, usecols=SS_COLUMNS)
 shopify_df = pd.read_csv(SHOPIFY_PATH, usecols=SHOPIFY_COLUMNS)
 manual_df = pd.read_csv(MAN_MARVEL_PATH)
-item_data_df = pd.read_csv(item_data_df_PATH)
+item_data_df = pd.read_csv(ITEM_DATA_PATH)
 
 # Clean up / work towards items in order data
 items = shopify_df[['Lineitem sku', 'Lineitem name', 'Created at']].copy()
