@@ -39,7 +39,7 @@ samples_to_send                    object
  - **published_at**: Date that item was most recently published on site.
  - **order_delta**: Delta of most recent order minus the oldest order in order data
  - **lifetime_delta**: Delta of most recent order in order data minus publish date
- - **multiple_publish_dates**: True or False whether or not the earlist order in data set happened before the publish date. Publish date that is older than the minimum order implies an item was published, sold, hidden, then republished. Making it a lot harder to programatically find the release date.
+ - **multiple_publish_dates**: True or False whether or not the earliest order in the data set happened before the publish date. Publish date that is older than the minimum order implies an item was published, sold, hidden, then republished. Making it a lot harder to programatically find the release date.
  - **quantity_on_hand**: Quantity on hand in respective warehouse.
  - **quantity_committed**: Quantity committed to sku in respective warehouse.
  - **quantity_available**: Quantity on hand minus Quantity committed.
