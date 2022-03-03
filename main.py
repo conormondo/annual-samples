@@ -92,7 +92,7 @@ merged = merged.drop_duplicates(subset='sku', keep='first').reset_index(drop=Tru
 
 # Adds Sample information for anything
 merged['samples'] = merged.apply(lambda x: calculate_sample_amount(x['quantity_available']) if \
-                                 x['lifetime_delta'].days > 356 or x['lifetime_delta'].days < 0 else None, axis=1)
+                                 x['lifetime_delta'].days > 356 or x['lifetime_delta'].days < 0 else 'None', axis=1)
 
 rename_dict = {'sku': 'sku', 
                'name': 'name', 
@@ -108,7 +108,7 @@ rename_dict = {'sku': 'sku',
                'quantity_on_hand': 'quantity_on_hand', 
                'quantity_committed': 'quantity_committed', 
                'quantity_available': 'quantity_available', 
-               'samples': 'samples'}
+               'samples': 'samples_to_send'}
 
 merged.rename(columns=rename_dict, inplace=True)
 # Output

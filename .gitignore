@@ -4,3 +4,4 @@ shopify_data/**
 __pycache__/
 config.py
 .venv/
+venv/

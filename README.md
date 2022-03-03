@@ -26,7 +26,7 @@ multiple_publish_dates               bool
 quantity_on_hand                    int64
 quantity_committed                  int64
 quantity_available                  int64
-samples                            object
+samples_to_send                    object
  ```
  
  ### Column Descriptions:
@@ -34,7 +34,7 @@ samples                            object
  - **name**: Item name
  - **order_min**: the 'oldest' orders with that skus in the order data.
  - **order_max**: the 'most recent' order with that sku in the order data.
- - **order_min_count**: Count of the arrow min column. Essentially to try and deduce confidence of release date by frequence of orders on the earliest order date.
+ - **order_min_count**: Count of the arrow min column. Essentially to try and deduce confidence of release date by frequencey of orders on the earliest order date.
  - **product_type**: Item Category from shopify
  - **published_at**: Date that item was most recently published on site.
  - **order_delta**: Delta of most recent order minus the oldest order in order data
@@ -42,5 +42,5 @@ samples                            object
  - **multiple_publish_dates**: True or False whether or not the earlist order in data set happened before the publish date. Publish date that is older than the minimum order implies an item was published, sold, hidden, then republished. Making it a lot harder to programatically find the release date.
  - **quantity_on_hand**: Quantity on hand in respective warehouse.
  - **quantity_committed**: Quantity committed to sku in respective warehouse.
- - **quantity_available**: Quantity on hand - Quantity commited.
- - **samples**: General action on what samples are needed to send
+ - **quantity_available**: Quantity on hand minus Quantity committed.
+ - **samples_to_send**: General action on what samples are needed to send
