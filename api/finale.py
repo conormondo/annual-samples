@@ -32,8 +32,13 @@ class Finale:
                 tmp = {}
                 for j in range(len(item)):
                     tmp[response[0][j]] = item[j]
+                    tmp['location'] = self.__str__()
                 data.append(tmp)
+            response[0].append('location')
         except Exception as err:
             print(f'Error getting report: {err}')
             return r
         return data
+    
+    def __str__(self) -> str:
+        return 'Finale'

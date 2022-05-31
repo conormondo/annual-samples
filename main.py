@@ -6,6 +6,7 @@ SS_PATH = 'data/annuals_from_ss.csv'
 SHOPIFY_PATH = 'data/shopify_data/16csv_files.csv'
 MAN_MARVEL_PATH = 'data/manually_selected_marvel.csv'
 ITEM_DATA_PATH = 'data/mondo_items_20220224.csv'
+BRAND_ASSURANCE_PATH = 'data/brand_assurance_xref.csv'
 
 SS_COLUMNS = ['Order - Number',
               'Date - Shipped Date',
@@ -33,6 +34,7 @@ ss_df = pd.read_csv(SS_PATH, usecols=SS_COLUMNS)
 shopify_df = pd.read_csv(SHOPIFY_PATH, usecols=SHOPIFY_COLUMNS)
 manual_df = pd.read_csv(MAN_MARVEL_PATH)
 item_data_df = pd.read_csv(ITEM_DATA_PATH)
+brand_assurance_df = pd.read_csv(BRAND_ASSURANCE_PATH)
 
 # Clean up / work towards items in order data
 items = shopify_df[['Lineitem sku', 'Lineitem name', 'Created at']].copy()
@@ -88,7 +90,19 @@ merged = pd.merge(all_marvel,
                   on='sku',
                   how='left')
 merged.sort_values(by='sku', inplace=True)
+
+# Pull in Brand Assurance ids
+ids = brand_assurance_df[['Mondo SKU', 'Marvel Brand Assurance Approval #']]
+merged = pd.merge(
+    merged,
+    ids,
+    left_on='sku',
+    right_on='Mondo SKU',
+    how='left'
+    
+)
 merged = merged.drop_duplicates(subset='sku', keep='first').reset_index(drop=True)
+merged.drop(columns='Mondo SKU', axis=1, inplace=True)
 
 # Adds Sample information for anything
 merged['samples'] = merged.apply(lambda x: calculate_sample_amount(x['quantity_available']) if \
@@ -108,7 +122,8 @@ rename_dict = {'sku': 'sku',
                'quantity_on_hand': 'quantity_on_hand', 
                'quantity_committed': 'quantity_committed', 
                'quantity_available': 'quantity_available', 
-               'samples': 'samples_to_send'}
+               'samples': 'samples_to_send',
+               'Marvel Brand Assurance Approval #': 'brand_assuance_id'}
 
 merged.rename(columns=rename_dict, inplace=True)
 # Output
